@@ -1,37 +1,3 @@
----
-title: "04_Master.Rmd"
-output: html_document
-date: "2023-08-01"
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
-
-
-
-
 
 ---
 title: "Master script for postfire analysis"
@@ -67,7 +33,7 @@ plot.NDVI(dat)
 
 Q1: This plot suggests that Fynbos greenness (NDVI) as observed from satellite saturates with time since fire. Why do you think it saturates rather than increasing linearly with time?
 
->*Answer 1:*
+>*Answer 1:* Immediately post-fire there is a rapid increase in NDVI from a burn scar (with no vegetation) as vegetation starts recovering. However as the vegetation reaches full recovery the NDVI starts to saturate as the vegetation is not getting any "greener." So NDVI cannot continue linearly as NDVI correlates with plant cover and this plateaus over time. 
 
 <br>
 
@@ -134,7 +100,10 @@ Lots more parameters...
 
 Q2: How do the estimates for the common parameters compare?
 
->*Answer 2:*
+>*Answer 2:* Parameter estimates in the full model had lower standard errors which indicates that the full model had lower uncertainty than the simple model. This is because the full model accounted for more of the variation in the data by including parameters for seasonality. Among the parameters, lambda (rate of increase of NDVI) had the greatest difference in estimate and standard error with both being higher in the simple model. This may be because the incorporation of seasonality in the full model allowed it to factor in times when NDVI dropped during vegetation recovery (the dry season) whereas in the simple model these fluctuations may have been treated as random with NDVI increasing constantly, and thus with a higher lambda. 
+The Alpha estimate was marginally lower in the full model while gamma was marginally higher. 
+
+
 
 <br>
 
@@ -152,11 +121,11 @@ anova(fit_negexp, fit_negexpS)
 
 Q3: Which model is better?
 
->*Answer 3:*
+>*Answer 3:* ANOVA tests differences in means between two or more categories. In this instance, Model 2 (the full model) has lower Residual Sum of Squares with the difference between the two models being significant (F = 39.2, p < 0.0001). This indicates model 2 is better at capturing the data however it also has many more parameters. Adding parameters increases the uncertainty in our estimate and therefore while model 2 is better at describing the data we shouldn't conclude it is a better model overall just yet. 
 
 Q4: How many degrees of freedom are there in this ANOVA and why (i.e. what are they)?
 
->*Answer 4:*
+>*Answer 4:* There are 2 degrees of freedom in this model as model 2 has two more parameter estimates than model 1. These two parameters are phi (adjusting the timing of the sine term to account for the season the fire occurred in) and A (the amplitude of the sine term). 
 
 <br>
 
@@ -249,7 +218,7 @@ AIC_simple - AIC_full
 
 Q5: Is there a preferred model and if so, which one?
 
->*Answer 5:*
+>*Answer 5:* Any difference in AIC greater than 2 is considered significant, with the lower AIC being prefered. Therefore the full model is prefered as it has an AIC 266957.8 below that of the simple model. This indicates the full model has a better balance between likelihood of producing the data (L) and number of estimated parameters than the simple model, even thoguh the simple model estimated fewer parameters and therefore had a lower K value. 
 
 <br>
 
@@ -267,7 +236,9 @@ You'll notice that these are completely different to the AICs for the MLE models
 
 Q6: Why is it not okay to compare the AIC of these NLS models with the AIC of the MLE models? Hint: type `?AIC` into the R console and do some reading.
 
->*Answer 6:*
+>*Answer 6:* The AIC calculation works for models where likelihood has been maximized, such as MLE. Models that are not fitted by maximum likelihood (such as NLS, which is fitted by reducing the residual error) can have AIC values but these are not comparable to those for maximum likelihood models. 
+URL for OWNER https://github.com/BenWittenberg/Ben_Holly
+URL for COLLABORATOR https://github.com/BenWittenberg/Holly_Ben
 
 <br>
 
